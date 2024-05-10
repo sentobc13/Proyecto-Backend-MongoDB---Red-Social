@@ -9,3 +9,4 @@ router.get('/title/:title',PostController.getPostByTitle);
 router.get('/id/:_id',PostController.getById);
 
 module.exports = router;
+
