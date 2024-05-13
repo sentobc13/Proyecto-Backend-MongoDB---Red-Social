@@ -53,6 +53,14 @@ const UserController = {
           });
         }
       },
+      async getById(req, res) {
+        try {
+          const user = await User.findById(req.params._id);
+          res.send(user);
+        } catch (error) {
+          console.error(error);
+        }
+      },
   };
 
 
