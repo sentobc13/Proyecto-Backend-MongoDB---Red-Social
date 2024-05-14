@@ -66,7 +66,7 @@ const PostController = {
           console.error(error);
         }
       },
-      async insertComment(req, res) {
+    async insertComment(req, res) {
         try {
           const post = await Post.findByIdAndUpdate(
             req.params._id,
@@ -79,6 +79,26 @@ const PostController = {
           res.status(500).send({ message: "Ha habido un problema con tu comentario" });
         }
       },
+      async like(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $push: { likes: req.user._id } },
+            { new: true }
+          );
+          await User.findByIdAndUpdate(
+            req.user._id,
+            { $push: { wishList: req.params._id } },
+            { new: true }
+          );
+          res.send(post);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema con tu like" });
+        }
+      },
+      
+
     
     
 
