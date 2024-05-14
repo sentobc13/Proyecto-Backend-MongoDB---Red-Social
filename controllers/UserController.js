@@ -8,7 +8,7 @@ const {JWT_SECRET} = require("../config/keys");
 
 const UserController = {
    
-    async create(req, res) {
+    async create(req, res, next) {
       try {
         const password = bcrypt.hashSync(req.body.password,10);
         const user = await User.create({...req.body,password,role:"user"});
@@ -16,6 +16,8 @@ const UserController = {
       } catch (error) {
         console.error(error);
         res.status(500).send(error)
+        next(error)
+        
       }
     },
     async login(req, res) {
