@@ -1,29 +1,36 @@
 const mongoose = require('mongoose');
-// const ObjectId = mongoose.SchemaTypes.ObjectId;
+const ObjectId = mongoose.SchemaTypes.ObjectId;
+
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    name:{
         type: String,
-        require: [true, 'Por favor rellena tu nombre'],
-    },
-    email: {
+        required: [true,"Por favor rellena tu nombre"]
+    },    
+    email:{
         type: String,
         match: [/.+\@.+\..+/, "Este correo no es válido"],
         unique: true,
-        required: [true, "Por favor rellena tu correo"],
-    },
-    password: {
+        required: [true, "Por favor rellena tu correo"]
+    },    
+    password:{
         type: String,
         required: [true, "Por favor rellena tu contraseña"],
-    },
-    birthday: {
+    },    
+    birthday:{
         type: Date,
-        require: [true, "Por favor indique su edad"],
-    },
-        tokens: [],
-        // orderIds: [{ type: ObjectId, ref: "Order" }],
-    }, 
-    { timestamps: true });
+        required: [true, "Por favor rellena tu edad"],
+    },    
+    tokens: [],
+}, { timestamps: true });
+
+
+UserSchema.methods.toJSON = function() {
+    const user = this._doc;
+    delete user.tokens;
+    delete user.password;
+    return user;
+}
 
 
 
