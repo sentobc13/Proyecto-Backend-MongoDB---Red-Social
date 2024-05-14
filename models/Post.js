@@ -10,6 +10,15 @@ const PostSchema = new mongoose.Schema({
         ref: "User"
     }
 }, { timestamps: true });
+
+
+PostSchema.methods.toJSON = function() {
+    const user = this._doc;
+    delete user.tokens;
+    delete user.password;
+    return user;
+}
+
     
 const Post = mongoose.model('Post', PostSchema);
 
