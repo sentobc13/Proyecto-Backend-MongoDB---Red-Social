@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config/keys");
+const Post = require("../models/Post");
 
 
 
@@ -56,14 +57,31 @@ const UserController = {
           });
         }
       },
-      async getById(req, res) {
+    async getById(req, res) {
         try {
-          const user = await User.findById(req.params._id);
+          const user = await User.findById(req.params._id)
+          .populate({
+            path:"postIds"
+          })
           res.send(user);
         } catch (error) {
           console.error(error);
         }
       },
+    async getInfo(req, res) {
+        try {
+          const user = await User.findById(req.user._id)
+          .populate({
+            path: "postIds",
+        });
+          res.send(user);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      
+      
+  
   };
 
 

@@ -3,12 +3,19 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 
 const PostSchema = new mongoose.Schema({
-    title: String,
-    body: String,
-    userId:{
-        type: ObjectId,
-        ref: "User"
-    }
+    title:{
+        type:String,
+        required: [true, "Por favor rellene todos los campos"]
+    },    
+    body:{ 
+        type:String,
+        required: [true, "Por favor rellene todos los campos"]
+    },    
+    comments:[{ 
+        userId:{ type: ObjectId, ref: "User"},
+        comment: String
+    }],
+    likes:[{type: ObjectId, ref:"User"}],
 }, { timestamps: true });
 
 

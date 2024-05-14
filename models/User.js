@@ -22,6 +22,8 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Por favor rellena tu edad"],
     },    
     tokens: [],
+    postIds: [{ type: ObjectId, ref: "Post" }],
+    wishList: [{type: ObjectId, ref: "Post"}],
 }, { timestamps: true });
 
 
