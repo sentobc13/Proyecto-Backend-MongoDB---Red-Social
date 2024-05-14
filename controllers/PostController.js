@@ -1,9 +1,16 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 const PostController = {
     async create(req, res) {
         try {
+            if(!req.body.title){
+                return res.status(400).send({message:"Por favor rellene el titulo"})
+            }else if(!req.body.body){
+                return res.status(400).send({message:"Por favor rellene el body"})
+            }
             const post = await Post.create(req.body)
+            await User.findByIdAndUpdate(req.user._id, { $push: { postIds: post._id }})
             res.status(201).send({ message: "Post creado con exito", post });
         } catch (error) {
             console.error(error)
@@ -59,6 +66,20 @@ const PostController = {
           console.error(error);
         }
       },
+      async insertComment(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $push: { comments: { comment:req.body.comment, userId: req.user._id } } },
+            { new: true }
+          );
+          res.send(post);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema con tu comentario" });
+        }
+      },
+    
     
 
 
