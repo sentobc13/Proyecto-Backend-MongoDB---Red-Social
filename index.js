@@ -3,7 +3,9 @@ const { handleTypeError }= require('./middleware/errors');
 const { dbConnection } = require("./config/config");
 const app = express()
 //require("dotenv").config()
+//console.log(process.env.PORT);
 const PORT = 3002
+//const PORT = process.env.PORT || 3000;
 
 app.use(express.json())
 dbConnection()
