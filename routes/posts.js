@@ -12,6 +12,8 @@ router.get('/',authentication,PostController.getAll);
 router.put('/comment/:_id',authentication,PostController.insertComment);
 router.put('/like/:_id', authentication, PostController.like);
 router.put('/notlike/:_id', authentication, PostController.notLike);
+router.put('/dislike/:_id', authentication, PostController.dislike);
+router.put('/notdislike/:_id', authentication, PostController.notDislike);
 
 module.exports = router;
 
