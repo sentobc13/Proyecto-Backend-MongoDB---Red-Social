@@ -9,7 +9,7 @@ const PostController = {
             }else if(!req.body.body){
                 return res.status(400).send({message:"Por favor rellene el body"})
             }
-            const post = await Post.create(req.body)
+            const post = await Post.create({...req.body, userId: req.user._id})
             await User.findByIdAndUpdate(req.user._id, { $push: { postIds: post._id }})
             res.status(201).send({ message: "Post creado con exito", post });
         } catch (error) {
