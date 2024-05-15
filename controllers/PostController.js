@@ -79,6 +79,19 @@ const PostController = {
           res.status(500).send({ message: "Ha habido un problema con tu comentario" });
         }
       },
+      async deleteComment(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $pull: { comments: { comment:req.body.comment, userId: req.user._id } } },
+            { new: true }
+          );
+          res.send(post);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema al borrar tu comentario" });
+        }
+      },
       async like(req, res) {
         try {
           const post = await Post.findByIdAndUpdate(
