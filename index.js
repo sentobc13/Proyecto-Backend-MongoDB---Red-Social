@@ -1,7 +1,6 @@
 const express = require("express");
 const { handleTypeError }= require('./middleware/errors');
 const { dbConnection } = require("./config/config");
-const { handleTypeError } = require('./middleware/errors');
 const app = express()
 require("dotenv").config()
 
