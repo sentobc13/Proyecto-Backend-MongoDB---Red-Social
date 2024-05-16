@@ -50,7 +50,7 @@ const UserController = {
           await User.findByIdAndUpdate(req.user._id, {
             $pull: { tokens: req.headers.authorization },
           });
-          res.send({ message: "Desconectado con éxito" });
+          res.status(200).send({ message: "Desconectado con éxito" });
         } catch (error) {
           console.error(error);
           res.status(500).send({
@@ -64,7 +64,7 @@ const UserController = {
           .populate({
             path:"postIds"
           })
-          res.send(user);
+          res.status(200).send(user);
         } catch (error) {
           console.error(error);
         }
@@ -75,7 +75,7 @@ const UserController = {
           .populate({
             path: "postIds",
         });
-          res.send(user);
+          res.status(200).send(user);
         } catch (error) {
           console.error(error);
         }

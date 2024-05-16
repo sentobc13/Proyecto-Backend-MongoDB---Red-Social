@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     },    
     tokens: [],
     postIds: [{ type: ObjectId, ref: "Post" }],
-    wishList: [{type: ObjectId, ref: "Post"}],
+    wishList: [{type: ObjectId, ref: "Post"}],  
 }, { timestamps: true });
 
 
