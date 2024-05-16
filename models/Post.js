@@ -11,11 +11,8 @@ const PostSchema = new mongoose.Schema({
         type:String,
         required: [true, "Por favor rellene todos los campos"]
     },    
-    comments:[{ 
-        userId:{ type: ObjectId, ref: "User"},
-        comment: String
-    }],
     userId:{type: ObjectId, ref:"User"},
+    commentIds: [{type: ObjectId, ref: "Comment"}],
     likes:[{type: ObjectId, ref:"User"}],
     dislikes:[{type: ObjectId, ref:"User"}],
 }, { timestamps: true });

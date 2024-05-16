@@ -18,5 +18,6 @@ app.get("/myName", (req, res) => {
     res.send("My name is " + req.query.name);
   });
 app.use(handleTypeError);
+app.use("/comments",require("./routes/comments"));
   
 app.listen(PORT, ()=> console.log(`Servidor levantado en el puerto ${PORT}`));
