@@ -2,10 +2,12 @@ const request = require('supertest');
 const app = require('../index.js'); 
 const User = require('../models/User.js'); 
 const Post = require ('../models/Post.js');
+const Comment = require('../models/Comment.js');
 require("dotenv").config();
 let token
 let postId 
 let userId
+let commentIds
 
 
 
@@ -13,6 +15,7 @@ describe("testing", () => {
     afterAll(async () => {
         await User.deleteMany({});
         await Post.deleteMany({});
+        await Comment.deleteMany({});
     });
     const user = {
         name: "agustin",
@@ -25,6 +28,9 @@ describe("testing", () => {
         title: "holaaa",
         body: "holaaa",
         userId: userId
+    };
+    const comment = {
+        comment: "Holaaa"
     };
     test("Crear usuario",async()=>{
         const res = await request (app)
@@ -49,7 +55,17 @@ describe("testing", () => {
         .set({authorization: token})
         .expect(201)
         expect(res.body.message).toBe("Post creado con exito");
-        postId = res.body._id
+        postId = res.body.post._id
+    })
+    test("Crear Comentario",async()=>{
+        const res = await request (app)
+        .post("/comments/postId/" + postId)
+        .send(comment)
+        .set({authorization: token})
+        .expect(201);
+
+        expect(res.body.message).toBe("Comentario creado con exito");
+        commentIds = res.body.comment._id
     })
     test("Post like", async () => {
         setTimeout(async()=>{
