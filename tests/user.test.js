@@ -63,7 +63,6 @@ describe("testing", () => {
         .send(comment)
         .set({authorization: token})
         .expect(201);
-
         expect(res.body.message).toBe("Comentario creado con exito");
         commentIds = res.body.comment._id
     })
