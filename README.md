@@ -24,7 +24,9 @@ Este proyecto consiste en una API REST para una red social, desarrollada con Nod
 ## Despliegue del Proyecto
 
 - **El proyecto se encuentra desplegado en:**
-https://documenter.getpostman.com/view/34523083/2sA3JT2xmR
+https://proyecto-backend-mongodb-red-social.onrender.com/
+
+
 
 
 ## Testing de Endpoints
