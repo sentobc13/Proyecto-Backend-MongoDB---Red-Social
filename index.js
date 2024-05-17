@@ -20,4 +20,8 @@ app.get("/myName", (req, res) => {
 app.use(handleTypeError);
 app.use("/comments",require("./routes/comments"));
   
+
+
 app.listen(PORT, ()=> console.log(`Servidor levantado en el puerto ${PORT}`));
+
+module.exports = app;

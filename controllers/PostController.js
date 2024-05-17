@@ -20,7 +20,7 @@ const PostController = {
     async update(req, res) {
         try {
             const post = await Post.findByIdAndUpdate(req.params._id, req.body, { new: true })
-            res.send({ message: "Post actualizado con éxito", post });
+            res.status(200).send({ message: "Post actualizado con éxito", post });
         } catch (error) {
             console.error(error);
         }
@@ -79,19 +79,6 @@ const PostController = {
           res.status(500).send({ message: "Ha habido un problema con tu comentario" });
         }
       },
-      async deleteComment(req, res) {
-        try {
-          const post = await Post.findByIdAndUpdate(
-            req.params._id,
-            { $pull: { comments: { comment:req.body.comment, userId: req.user._id } } },
-            { new: true }
-          );
-          res.send(post);
-        } catch (error) {
-          console.error(error);
-          res.status(500).send({ message: "Ha habido un problema al borrar tu comentario" });
-        }
-      },
       async like(req, res) {
         try {
           const post = await Post.findByIdAndUpdate(
@@ -104,7 +91,7 @@ const PostController = {
             { $push: { wishList: req.params._id } },
             { new: true }
           );
-          res.send(post);
+          res.send({message:"Like dado con éxito"},post);
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema con tu like" });
@@ -122,7 +109,7 @@ const PostController = {
             { $pull: { wishList: req.params._id } },
             { new: true }
           );
-          res.send(post);
+          res.send({message:"Like quitado con éxito"},post);
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema al quitar el like" });
@@ -139,7 +126,7 @@ const PostController = {
             req.user._id,
             { new: true }
           );
-          res.send(post);
+          res.send({message:"Dislike dado con éxito"},post);
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema con tu dislike" });
@@ -156,7 +143,7 @@ const PostController = {
             req.user._id,
             { new: true }
           );
-          res.send(post);
+          res.send({message:"Dislike quitado con éxito"},post);
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema al quitar el like" });
