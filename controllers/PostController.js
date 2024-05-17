@@ -1,9 +1,16 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 const PostController = {
     async create(req, res) {
         try {
-            const post = await Post.create(req.body)
+            if(!req.body.title){
+                return res.status(400).send({message:"Por favor rellene el titulo"})
+            }else if(!req.body.body){
+                return res.status(400).send({message:"Por favor rellene el body"})
+            }
+            const post = await Post.create({...req.body, userId: req.user._id})
+            await User.findByIdAndUpdate(req.user._id, { $push: { postIds: post._id }})
             res.status(201).send({ message: "Post creado con exito", post });
         } catch (error) {
             console.error(error)
@@ -13,7 +20,7 @@ const PostController = {
     async update(req, res) {
         try {
             const post = await Post.findByIdAndUpdate(req.params._id, req.body, { new: true })
-            res.send({ message: "Post actualizado con éxito", post });
+            res.status(200).send({ message: "Post actualizado con éxito", post });
         } catch (error) {
             console.error(error);
         }
@@ -48,6 +55,104 @@ const PostController = {
             console.error(error);
         }
     },
+    async getAll(req, res) {
+        try {
+          const { page = 1, limit = 10 } = req.query;
+          const post = await Post.find()
+            .limit(limit)
+            .skip((page - 1) * limit);
+          res.send(post);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+    async insertComment(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $push: { comments: { comment:req.body.comment, userId: req.user._id } } },
+            { new: true }
+          );
+          res.send(post);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema con tu comentario" });
+        }
+      },
+      async like(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $push: { likes: req.user._id } },
+            { new: true }
+          );
+          await User.findByIdAndUpdate(
+            req.user._id,
+            { $push: { wishList: req.params._id } },
+            { new: true }
+          );
+          res.send({message:"Like dado con éxito",post});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema con tu like" });
+        }
+      },
+      async notLike(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $pull: { likes: req.user._id } },
+            { new: true }
+          );
+          await User.findByIdAndUpdate(
+            req.user._id,
+            { $pull: { wishList: req.params._id } },
+            { new: true }
+          );
+          res.send({message:"Like quitado con éxito",post});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema al quitar el like" });
+        }
+      },
+      async dislike(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $push: { dislikes: req.user._id } },
+            { new: true }
+          );
+          await User.findByIdAndUpdate(
+            req.user._id,
+            { new: true }
+          );
+          res.send({message:"Dislike dado con éxito",post});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema con tu dislike" });
+        }
+      },
+      async notDislike(req, res) {
+        try {
+          const post = await Post.findByIdAndUpdate(
+            req.params._id,
+            { $pull: { dislikes: req.user._id } },
+            { new: true }
+          );
+          await User.findByIdAndUpdate(
+            req.user._id,
+            { new: true }
+          );
+          res.send({message:"Dislike quitado con éxito",post});
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ message: "Ha habido un problema al quitar el like" });
+        }
+      },
+      
+
+    
+    
 
 
 
