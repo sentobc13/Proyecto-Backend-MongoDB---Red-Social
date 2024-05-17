@@ -91,7 +91,7 @@ const PostController = {
             { $push: { wishList: req.params._id } },
             { new: true }
           );
-          res.send({message:"Like dado con éxito"},post);
+          res.send({message:"Like dado con éxito",post});
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema con tu like" });
@@ -109,7 +109,7 @@ const PostController = {
             { $pull: { wishList: req.params._id } },
             { new: true }
           );
-          res.send({message:"Like quitado con éxito"},post);
+          res.send({message:"Like quitado con éxito",post});
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema al quitar el like" });
@@ -126,7 +126,7 @@ const PostController = {
             req.user._id,
             { new: true }
           );
-          res.send({message:"Dislike dado con éxito"},post);
+          res.send({message:"Dislike dado con éxito",post});
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema con tu dislike" });
@@ -143,7 +143,7 @@ const PostController = {
             req.user._id,
             { new: true }
           );
-          res.send({message:"Dislike quitado con éxito"},post);
+          res.send({message:"Dislike quitado con éxito",post});
         } catch (error) {
           console.error(error);
           res.status(500).send({ message: "Ha habido un problema al quitar el like" });
