@@ -49,8 +49,15 @@ const PostController = {
     },
     async getById(req, res) {
         try {
-            const post = await Post.findById(req.params._id)
-            res.send(post)
+          const post = await Post.findById(req.params._id)
+          .populate({
+              path: 'commentIds',
+              populate: {
+                  path: 'userId',
+                  select: 'name' 
+              }
+          });
+      res.send(post);
         } catch (error) {
             console.error(error);
         }
