@@ -80,6 +80,17 @@ const UserController = {
           console.error(error);
         }
       },
+    async getAllUsers(req, res) {
+        try {
+          const { page = 1, limit = 10 } = req.query;
+          const users = await User.find()
+            .limit(limit)
+            .skip((page - 1) * limit);
+          res.send(users);
+        } catch (error) {
+          console.error(error);
+        }
+      }
       
       
   

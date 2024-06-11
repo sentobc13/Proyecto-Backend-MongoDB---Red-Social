@@ -66,8 +66,8 @@ const PostController = {
         try {
           const { page = 1, limit = 10 } = req.query;
           const post = await Post.find()
-            .limit(limit)
-            .skip((page - 1) * limit);
+            // .limit(limit)
+            // .skip((page - 1) * limit);
           res.send(post);
         } catch (error) {
           console.error(error);
