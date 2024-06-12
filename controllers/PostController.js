@@ -64,7 +64,7 @@ const PostController = {
     },
     async getAll(req, res) {
         try {
-          const { page = 1, limit = 10 } = req.query;
+          // const { page = 1, limit = 10 } = req.query;
           const post = await Post.find()
             // .limit(limit)
             // .skip((page - 1) * limit);
@@ -73,19 +73,36 @@ const PostController = {
           console.error(error);
         }
       },
-    async insertComment(req, res) {
+      async insertComment(req, res) {
         try {
-          const post = await Post.findByIdAndUpdate(
-            req.params._id,
-            { $push: { comments: { comment:req.body.comment, userId: req.user._id } } },
-            { new: true }
-          );
-          res.send(post);
+            const { comment } = req.body;
+            const userId = req.user._id;
+            const postId = req.params._id;
+
+            
+    
+            // Crear un nuevo comentario
+            const newComment = await Comment.create({ comment, userId, postId });
+    
+            // Actualizar el post con el nuevo comentario
+            const post = await Post.findByIdAndUpdate(
+                postId,
+                { $push: { commentIds: newComment._id } },
+                { new: true }
+            ).populate({
+                path: 'commentIds',
+                populate: {
+                    path: 'userId',
+                    select: 'name'
+                }
+            });
+    
+            res.status(201).send(post);
         } catch (error) {
-          console.error(error);
-          res.status(500).send({ message: "Ha habido un problema con tu comentario" });
+            console.error(error);
+            res.status(500).send("Error al agregar comentario");
         }
-      },
+    },
       async like(req, res) {
         try {
           const post = await Post.findByIdAndUpdate(
